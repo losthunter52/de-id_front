@@ -1,4 +1,5 @@
 <template>
+  <div class="container mt-4">
   <div class="nav flex-column nav-pills p-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     <div class="col mx-auto text-center p-3">
       <img src="@/assets/logo.png" height="50" width="50">
@@ -13,7 +14,9 @@
     <button @click="register" class="btn btn-primary mt-2 bg-dark">Register</button>
     <button @click="documentation" class="btn btn-primary mt-2 bg-dark">Docs</button>
   </div>
-  <div class="container mt-4">
+  <div class="form-group">
+      <input v-model="api_url" id="api_url" type="text" class="form-control" placeholder="API URL">
+    </div>
     <div class="form-group">
       <label for="textInput">Payload</label>
       <textarea
@@ -47,6 +50,7 @@
 export default {
   data() {
     return {
+      api_url: "",
       textInput: "",
       responseField: "",
       sessionToken: "", // Your session token
@@ -62,8 +66,14 @@ export default {
     async postAnonymize() {
       try {
         const jsonData = JSON.parse(this.textInput);
+        const url = this.api_url.trim(); 
 
-        const response = await fetch("http://127.0.0.1:8000/anonymize", {
+        if (url.length === 0) {
+        console.error("Task ID is empty.");
+        return;
+        }
+
+        const response = await fetch(`${url}/anonymize`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -80,7 +90,14 @@ export default {
     },
     async postResults() {
       try {
-        const response = await fetch("http://127.0.0.1:8000/results", {
+        const url = this.api_url.trim(); 
+
+        if (url.length === 0) {
+        console.error("Task ID is empty.");
+        return;
+        }
+
+        const response = await fetch(`${url}/results`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -103,7 +120,14 @@ export default {
         return;
       }
 
-      const response = await fetch(`http://127.0.0.1:8000/result_detail/${task_id}`, {
+      const url = this.api_url.trim(); 
+
+        if (url.length === 0) {
+        console.error("Task ID is empty.");
+        return;
+        }
+
+      const response = await fetch(`${url}/result_detail/${task_id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +148,15 @@ export default {
           password: this.password,
         };
 
-        const response = await fetch("http://127.0.0.1:8000/login", {
+        const url = this.api_url.trim(); 
+
+        if (url.length === 0) {
+        console.error("Task ID is empty.");
+        return;
+        }
+
+
+        const response = await fetch(`${url}/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -145,7 +177,14 @@ export default {
           password: this.password,
         };
 
-        const response = await fetch("http://127.0.0.1:8000/register", {
+        const url = this.api_url.trim(); 
+
+        if (url.length === 0) {
+        console.error("Task ID is empty.");
+        return;
+        }
+
+        const response = await fetch(`${url}/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
